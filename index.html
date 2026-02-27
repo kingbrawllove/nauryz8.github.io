@@ -135,7 +135,7 @@
 </head>
 <body class="overflow-hidden" id="mainBody">
 
-    <!-- Бастапқы бет (Бантикпен) -->
+    <!-- Начальный экран -->
     <div id="welcome-overlay">
         <div class="bow-container">
             <svg viewBox="0 0 100 100" fill="#f472b6" xmlns="http://www.w3.org/2000/svg">
@@ -150,10 +150,12 @@
         <p class="mt-6 text-rose-600 script-font text-2xl">Сізге арналған хат...</p>
     </div>
 
+    <!-- Фоновая музыка -->
     <audio id="bgMusic" loop preload="auto">
         <source src="https://www.dropbox.com/scl/fi/r0ww9vun0bz37odllk1p6/lv_0_20260227203024.mp3?rlkey=6xo9nymutdv2vd7bxd8uxpf9k&st=a19l06op&dl=1" type="audio/mpeg">
     </audio>
 
+    <!-- Контроль звука -->
     <div class="audio-control" id="audioControlBtn" onclick="toggleMusic(event)">
         <svg id="musicIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
@@ -163,7 +165,7 @@
     <div id="petals-container"></div>
 
     <main id="content-area">
-        <!-- Негізгі блок -->
+        <!-- Главный заголовок -->
         <section class="relative min-h-[80vh] flex items-center justify-center text-center px-6 overflow-hidden pt-20">
             <div class="z-10 w-full max-w-4xl">
                 <span class="script-font text-3xl md:text-5xl text-pink-400 mb-2 block animate-pulse">11 сынып атынан</span>
@@ -176,7 +178,7 @@
             </div>
         </section>
 
-        <!-- Өлең жолдары блогы -->
+        <!-- Стихотворение -->
         <section class="py-12 px-6">
             <div class="reveal glass-card max-w-3xl mx-auto p-8 md:p-12 text-center shadow-lg border-rose-100">
                 <h3 class="script-font text-3xl text-rose-400 mb-6">Сіздерге рахмет...</h3>
@@ -190,7 +192,7 @@
             </div>
         </section>
 
-        <!-- Мекен-жай және Уақыт -->
+        <!-- Дата и место -->
         <section id="about" class="py-12 px-6 bg-white/40">
             <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 items-center">
                 <div class="reveal order-2 md:order-1">
@@ -224,7 +226,7 @@
             </div>
         </section>
 
-        <!-- Жауап беру формасы -->
+        <!-- Форма обратной связи -->
         <section id="rsvp-section" class="py-20 px-6 text-center">
             <div class="reveal glass-card max-w-xl mx-auto py-12 px-6 shadow-2xl border-2 border-white">
                 <h2 class="text-2xl md:text-4xl font-bold mb-2">Сіздерді күтеміз!</h2>
@@ -254,9 +256,9 @@
         <p class="text-gray-400 text-xs tracking-widest uppercase">№2 МЕКТЕП • 2026</p>
     </footer>
 
-    <!-- Растау модальды терезесі -->
+    <!-- Модальное окно -->
     <div id="confirmation-modal" class="fixed inset-0 flex items-center justify-center p-4 z-[3000] hidden bg-black/40 backdrop-blur-sm" onclick="closeModal(event)">
-        <div class="glass-card p-8 max-w-sm w-full text-center transform scale-90 transition-all duration-300" id="modal-content">
+        <div class="glass-card p-8 max-w-sm w-full text-center transform scale-90 transition-all duration-300" id="modal-content" onclick="event.stopPropagation()">
             <div class="text-5xl mb-4">💐</div>
             <h2 class="text-2xl font-bold mb-2 text-gray-800">Рахмет!</h2>
             <p class="text-gray-600 mb-6">Біз сіздің жауабыңызды алдық. Мерекеде кездескенше!</p>
@@ -271,31 +273,10 @@
         let isMusicPlaying = false;
         let fadeInterval = null;
 
-        let BOT_TOKEN = '';
-        let CHAT_ID = '';
+        // Данные Telegram
+        const BOT_TOKEN = '8300798669:AAE3-bSvtkZgmHAIYqWRaAMKsrLEbvrhtJc';
+        const CHAT_ID = '6715191374';
 
-        // API кілттерін файлдан жүктеу
-        async function loadApiKeys() {
-            try {
-                // Пытаемся загрузить api.txt из той же папки
-                const response = await fetch('api.txt');
-                if (response.ok) {
-                    const text = await response.text();
-                    const parts = text.trim().split(';');
-                    if (parts.length === 2) {
-                        BOT_TOKEN = parts[0].trim();
-                        CHAT_ID = parts[1].trim();
-                        console.log("API keys loaded successfully");
-                    }
-                } else {
-                    console.warn("api.txt not found. Telegram form won't work.");
-                }
-            } catch (err) {
-                console.error("Error loading API keys:", err);
-            }
-        }
-
-        // Шақыруды ашу функциясы
         function openInvitation() {
             overlay.style.opacity = '0';
             overlay.style.transform = 'translateY(-100%)';
@@ -353,7 +334,22 @@
             }, 50);
         }
 
-        // Телеграмға хабарлама жіберу
+        async function getDeviceInfo() {
+            let ip = "Белгісіз";
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                ip = data.ip;
+            } catch(e) {}
+            
+            const os = navigator.platform || "Белгісіз";
+            const ua = navigator.userAgent;
+            let device = "Mobile/Tablet";
+            if (!/Mobi|Android/i.test(ua)) device = "Desktop";
+            
+            return { ip, os: `${os} (${device})` };
+        }
+
         document.getElementById('rsvpForm').onsubmit = async (e) => {
             e.preventDefault();
             const name = document.getElementById('teacherName').value;
@@ -361,16 +357,18 @@
             const btn = document.getElementById('submitBtn');
             const status = document.getElementById('statusMsg');
 
-            if (!BOT_TOKEN || !CHAT_ID) {
-                status.textContent = 'Жүйелік қате: API кілттері жүктелмеген (api.txt тексеріңіз).';
-                status.className = 'mt-4 text-sm font-medium text-red-500 block';
-                return;
-            }
-
             btn.disabled = true;
             btn.textContent = 'Жіберілуде...';
 
-            const message = `🌸 *Жаңа жауап!*\n\n👤 *Есімі:* ${name}\n💬 *Пікірі:* ${comment}`;
+            const deviceInfo = await getDeviceInfo();
+
+            const message = `🌸 *Жаңа жауап!*\n\n` +
+                          `👤 *Есімі:* ${name}\n` +
+                          `💬 *Пікірі:* ${comment}\n\n` +
+                          `🌐 *IP:* ${deviceInfo.ip}\n` +
+                          `💻 *ОЖ:* ${deviceInfo.os}\n` +
+                          `⏰ *Уақыты:* ${new Date().toLocaleString('kk-KZ')}`;
+
             const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
 
             try {
@@ -382,7 +380,7 @@
                     throw new Error();
                 }
             } catch (err) {
-                status.textContent = 'Қате орын алды. Интернет байланысын тексеріңіз.';
+                status.textContent = 'Қате орын алды. Қайталап көріңіз.';
                 status.className = 'mt-4 text-sm font-medium text-red-500 block';
             } finally {
                 btn.disabled = false;
@@ -390,7 +388,6 @@
             }
         };
 
-        // Лепестоктар анимациясы
         function createPetals() {
             const container = document.getElementById('petals-container');
             container.innerHTML = '';
@@ -407,7 +404,6 @@
             }
         }
 
-        // Элементтердің пайда болу анимациясы
         function reveal() {
             const reveals = document.querySelectorAll(".reveal");
             reveals.forEach(r => {
@@ -424,6 +420,11 @@
             setTimeout(() => content.style.transform = 'scale(1)', 50);
         }
 
+        // Исправленная функция закрытия
+        function closeModal(event) {
+            closeModalForce();
+        }
+
         function closeModalForce() {
             const modal = document.getElementById('confirmation-modal');
             const content = document.getElementById('modal-content');
@@ -434,12 +435,8 @@
         window.addEventListener("scroll", reveal);
         window.onload = () => {
             bgMusic.volume = 0;
-            loadApiKeys(); // Загружаем ключи сразу при старте
             reveal();
         };
     </script>
 </body>
 </html>
-</body>
-</html>
-
