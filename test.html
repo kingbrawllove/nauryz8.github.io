@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8 Наурызға шақыру — Сүйікті ұстаздарға</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #fce4ec;
+            --accent-gold: #d4af37;
+            --soft-rose: #f8bbd0;
+            --text-dark: #4a4a4a;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #fff5f8 0%, #fce4ec 100%);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, .font-elegant {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .script-font {
+            font-family: 'Great Vibes', cursive;
+        }
+
+        .petal {
+            position: absolute;
+            background-color: #ffc0cb;
+            border-radius: 150% 0 150% 0;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(110vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gold-btn {
+            background: linear-gradient(45deg, #d4af37, #f1d592);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .gold-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+        }
+
+        .audio-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: white;
+            padding: 12px;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            cursor: pointer;
+            border: 2px solid var(--soft-rose);
+            transition: transform 0.2s;
+        }
+
+        .audio-control:hover {
+            transform: scale(1.1);
+        }
+
+        #confirmation-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body id="mainBody">
+
+    <audio id="bgMusic" loop>
+        <source src="https://www.dropbox.com/scl/fi/r0ww9vun0bz37odllk1p6/lv_0_20260227203024.mp3?rlkey=6xo9nymutdv2vd7bxd8uxpf9k&st=a19l06op&dl=1" type="audio/mpeg">
+    </audio>
+
+    <div class="audio-control" onclick="toggleMusic(event)">
+        <svg id="musicIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+        </svg>
+    </div>
+
+    <div id="petals-container"></div>
+
+    <section class="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden">
+        <div class="z-10 max-w-4xl">
+            <span class="script-font text-3xl md:text-5xl text-pink-400 mb-4 block animate-bounce">11 сынып атынан</span>
+            <h1 class="text-4xl md:text-7xl font-bold mb-6 text-gray-800 leading-tight">
+                Қымбатты ұстаздар, <br> Сіздерді 8 наурыз күнімен <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-500">құттықтаймыз!</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+                Сіздер бізді күн сайын еңбектеріңізбен, шыдамдылықтарыңызбен және мейірімдеріңізбен шабыттандырасыздар. Осы тамаша көктемгі күні біз сіздерге жылулық пен алғысымыздың бір бөлшегін сыйлағымыз келеді.
+            </p>
+            <button onclick="showModal()" class="gold-btn px-10 py-4 rounded-full text-lg font-semibold tracking-wide uppercase">
+                Шақыруды қабылдау
+            </button>
+        </div>
+        
+        <div class="absolute top-0 left-0 p-8 opacity-20 hidden md:block">
+            <svg width="200" height="200" viewBox="0 0 100 100"><path d="M10 90 Q 50 10 90 90" stroke="#f472b6" fill="transparent" stroke-width="0.5"/></svg>
+        </div>
+    </section>
+
+    <section id="about" class="py-32 px-4 bg-white/40">
+        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="reveal">
+                <h2 class="text-4xl font-bold mb-6">Қашан және қайда?</h2>
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-pink-100 p-4 rounded-2xl">
+                            <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        </div>
+                        <div>
+                            <p class="font-bold text-xl">8 наурыз, 13:00</p>
+                            <p class="text-gray-500">Сіздерді күтеміз</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-pink-100 p-4 rounded-2xl">
+                            <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <div>
+                            <p class="font-bold text-xl">Акт залы</p>
+                            <p class="text-gray-500">Мектеп ғимараты</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="mt-8 text-gray-600 leading-relaxed">
+                    Сіздерді барлық 11 сынып оқушылары дайындаған мерекелік концерт, шынайы құттықтаулар және жайлы шығармашылық атмосфера күтеді. Біз бұл күнді арнайы сіздер үшін ерекше етуге тырыстық.
+                </p>
+            </div>
+            <div class="reveal glass-card p-2">
+                <img src="https://avatars.mds.yandex.net/get-altay/15232272/2a000001945f6e8fe53ab1ca77a7288ae3c6/XXL_height" alt="8 наурыз гүлдері" class="rounded-2xl shadow-lg w-full h-[450px] object-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- Қайтарылған өлең жолдары блогы -->
+    <section class="py-32 px-4 bg-gradient-to-b from-transparent to-pink-100">
+        <div class="max-w-3xl mx-auto text-center reveal">
+            <div class="script-font text-5xl text-pink-400 mb-6">Сіздерге рахмет...</div>
+            <p class="text-xl md:text-2xl text-gray-700 italic leading-loose">
+                "Ұстаз деген асыл жан ғой ардақты, <br> 
+                Ұстаздай жан бар ма екен салмақты? <br> 
+                Шәкірттен бар білімін аямаған ұстаздар, <br> 
+                Баршамызға қымбат жан боп қалмақшы!"
+            </p>
+        </div>
+    </section>
+
+    <section class="py-32 px-4 text-center">
+        <div class="reveal glass-card max-w-4xl mx-auto py-16 px-8 relative overflow-hidden">
+            <h2 class="text-3xl md:text-5xl font-bold mb-8 relative z-10">Сіздерді көруге қуаныштымыз!</h2>
+            <p class="text-lg text-gray-600 mb-10 relative z-10">Келетініңізді растауыңызды сұраймыз.</p>
+            <button onclick="showModal()" class="gold-btn px-12 py-5 rounded-full text-xl font-bold uppercase relative z-10">
+                Мен мерекеге келемін
+            </button>
+            
+            <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-pink-200 rounded-full blur-3xl opacity-50"></div>
+            <div class="absolute -top-10 -left-10 w-40 h-40 bg-rose-200 rounded-full blur-3xl opacity-50"></div>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-pink-200 text-center">
+        <div class="script-font text-3xl text-pink-400 mb-4">Махаббатпен, 11-сынып оқушылары</div>
+        <p class="text-gray-500 tracking-widest uppercase text-sm">№2 мектеп • 2026</p>
+    </footer>
+
+    <div id="confirmation-modal" onclick="closeModal(event)">
+        <div class="glass-card p-10 max-w-md w-full mx-4 text-center transform scale-95 transition-transform duration-300" id="modal-content">
+            <div class="text-6xl mb-6">🌸</div>
+            <h2 class="text-3xl font-bold mb-4">Рахмет!</h2>
+            <p class="text-gray-600 mb-8">Біз сізді көргенімізге қуаныштымыз!</p>
+            <button onclick="closeModalForce()" class="w-full py-4 bg-gray-800 text-white rounded-xl font-semibold hover:bg-gray-700 transition-colors">
+                Жабу
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const bgMusic = document.getElementById('bgMusic');
+        let isMusicPlaying = false;
+        let hasInteracted = false;
+        let fadeInterval = null;
+
+        function handleFirstInteraction() {
+            if (!hasInteracted) {
+                hasInteracted = true;
+                fadeIn();
+                updateMusicIcon(true);
+                isMusicPlaying = true;
+                
+                document.removeEventListener('click', handleFirstInteraction);
+                document.removeEventListener('touchstart', handleFirstInteraction);
+            }
+        }
+
+        document.addEventListener('click', handleFirstInteraction);
+        document.addEventListener('touchstart', handleFirstInteraction);
+
+        function toggleMusic(event) {
+            if(event) event.stopPropagation();
+
+            if (isMusicPlaying) {
+                fadeOut();
+                updateMusicIcon(false);
+            } else {
+                fadeIn();
+                updateMusicIcon(true);
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function updateMusicIcon(playing) {
+            const icon = document.getElementById('musicIcon');
+            if (playing) {
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />';
+            } else {
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />';
+            }
+        }
+
+        function fadeIn() {
+            clearInterval(fadeInterval);
+            bgMusic.volume = 0;
+            bgMusic.play().catch(e => console.error("Ойнату қатесі:", e));
+            
+            fadeInterval = setInterval(() => {
+                if (bgMusic.volume < 0.95) {
+                    bgMusic.volume += 0.05;
+                } else {
+                    bgMusic.volume = 1;
+                    clearInterval(fadeInterval);
+                }
+            }, 50);
+        }
+
+        function fadeOut() {
+            clearInterval(fadeInterval);
+            fadeInterval = setInterval(() => {
+                if (bgMusic.volume > 0.05) {
+                    bgMusic.volume -= 0.05;
+                } else {
+                    bgMusic.volume = 0;
+                    bgMusic.pause();
+                    clearInterval(fadeInterval);
+                }
+            }, 50);
+        }
+
+        function createPetals() {
+            const container = document.getElementById('petals-container');
+            const petalCount = 25;
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                const size = Math.random() * 15 + 10 + 'px';
+                petal.style.width = size;
+                petal.style.height = size;
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.animationDuration = Math.random() * 5 + 7 + 's';
+                petal.style.animationDelay = Math.random() * 5 + 's';
+                petal.style.backgroundColor = `hsl(${Math.random() * 20 + 340}, 100%, 85%)`;
+                container.appendChild(petal);
+            }
+        }
+
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            reveals.forEach(r => {
+                const windowHeight = window.innerHeight;
+                const elementTop = r.getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    r.classList.add("active");
+                }
+            });
+        }
+
+        function showModal() {
+            const modal = document.getElementById('confirmation-modal');
+            const content = document.getElementById('modal-content');
+            modal.style.display = 'flex';
+            setTimeout(() => content.style.transform = 'scale(1)', 10);
+            
+            if (!hasInteracted) {
+                handleFirstInteraction();
+            }
+        }
+
+        function closeModal(e) {
+            if (e.target.id === 'confirmation-modal') closeModalForce();
+        }
+
+        function closeModalForce() {
+            const modal = document.getElementById('confirmation-modal');
+            const content = document.getElementById('modal-content');
+            content.style.transform = 'scale(0.9)';
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        window.addEventListener("scroll", reveal);
+        window.onload = () => {
+            createPetals();
+            reveal();
+        };
+    </script>
+</body>
+</html>
