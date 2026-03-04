@@ -157,21 +157,22 @@
         }
 
         #wish-slider-container {
-            min-height: 450px;
+            min-height: 500px;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             perspective: 1000px;
         }
 
         .wish-slide {
             position: absolute;
             width: 90%;
-            max-width: 500px;
-            padding: 2.5rem;
+            max-width: 600px;
+            max-height: 480px;
+            padding: 2rem;
             opacity: 0;
             transform: translateX(100%) scale(0.9) rotateY(10deg);
             transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease;
@@ -185,6 +186,17 @@
             border-radius: 32px;
             box-shadow: 0 20px 40px rgba(244, 114, 182, 0.15);
             border: 2px solid white;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #f8bbd0 transparent;
+        }
+
+        .wish-slide::-webkit-scrollbar {
+            width: 4px;
+        }
+        .wish-slide::-webkit-scrollbar-thumb {
+            background: #f8bbd0;
+            border-radius: 10px;
         }
 
         .wish-slide.active {
@@ -204,16 +216,17 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
             width: 100%;
-            line-height: 1.8;
+            line-height: 1.6;
             color: #4a4a4a;
+            font-size: clamp(1.1rem, 4vw, 2.5rem);
         }
 
         .quote-icon {
-            font-size: 4rem;
+            font-size: 3rem;
             color: #fce4ec;
-            position: absolute;
-            top: 10px;
-            left: 20px;
+            position: sticky;
+            top: 0;
+            align-self: flex-start;
             z-index: -1;
             line-height: 1;
         }
@@ -258,7 +271,7 @@
                 <span class="glow-tag inline-block px-8 py-2 rounded-full script-font text-3xl md:text-5xl text-pink-500 mb-8">
                     11-сыныптардың атынан
                 </span>
-                <h1 class="text-5xl md:text-8xl font-bold mb-6 text-gray-800 leading-tight">
+                <h1 class="text-4xl md:text-7xl font-bold mb-6 text-gray-800 leading-tight">
                     <span>Мектебіміздің асыл жандары - ұстаздар,</span> <br> 
                     <span class="text-pink-500">8 Наурыз</span> мерекесімен!
                 </h1>
@@ -269,9 +282,9 @@
         </section>
 
         <section class="py-20 px-6">
-            <div class="reveal glass-card max-w-3xl mx-auto p-10 text-center shadow-2xl">
+            <div class="reveal glass-card max-w-3xl mx-auto p-10 text-center shadow-2xl overflow-hidden">
                 <h3 class="script-font text-4xl text-rose-400 mb-8">Сіздерге алғыс...</h3>
-                <div class="text-xl md:text-3xl font-light italic leading-relaxed text-gray-700">
+                <div class="text-xl md:text-3xl font-light italic leading-relaxed text-gray-700 max-h-[300px] overflow-y-auto pr-2">
                     "Ұстаз деген асыл жан ғой ардақты, <br>
                     Ұстаздай жан бар ма екен салмақты? <br>
                     Шәкірттен бар білімін аямаған ұстаздар, <br>
@@ -386,9 +399,9 @@
                 slide.className = `wish-slide ${idx === 0 ? 'active' : ''}`;
                 slide.innerHTML = `
                     <span class="quote-icon">“</span>
-                    <div class="wish-text script-font text-2xl md:text-4xl text-gray-700 mb-8 italic px-2">"${wish.text}"</div>
-                    <div class="h-1 w-16 bg-gradient-to-right from-rose-200 to-rose-400 rounded-full mb-6"></div>
-                    <p class="font-bold text-rose-500 tracking-wider text-xl md:text-2xl">— ${wish.name}</p>
+                    <div class="wish-text script-font italic px-2">"${wish.text}"</div>
+                    <div class="h-1 w-16 bg-gradient-to-right from-rose-200 to-rose-400 rounded-full my-6 flex-shrink-0"></div>
+                    <p class="font-bold text-rose-500 tracking-wider text-xl md:text-2xl pb-4">— ${wish.name}</p>
                 `;
                 wrapper.appendChild(slide);
 
@@ -399,7 +412,7 @@
             });
 
             if (wishData.length > 1) {
-                setInterval(nextWish, 6000);
+                setInterval(nextWish, 8000);
             }
         }
 
@@ -415,6 +428,7 @@
             const oldIndex = currentWishIndex;
             setTimeout(() => {
                 slides[oldIndex].classList.remove('exit');
+                slides[oldIndex].scrollTop = 0;
             }, 800);
 
             currentWishIndex = index;
@@ -511,5 +525,4 @@
     </script>
 </body>
 </html>
-
 
